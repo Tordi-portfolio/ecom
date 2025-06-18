@@ -1,0 +1,360 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons (optional for cart icon) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <!-- Navigation -->
+<style>
+    .navbar {
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        color: #2c3e50 !important;
+    }
+
+    .navbar-nav .nav-link {
+        color: #2c3e50 !important;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #007bff !important;
+        transform: translateY(-2px);
+    }
+
+    .dropdown-menu {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #007bff;
+    }
+
+    .btn-outline-dark {
+        border-radius: 30px;
+        transition: all 0.3s;
+    }
+
+    .btn-outline-dark:hover {
+        background-color: #000;
+        color: white;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 991.98px) {
+        .navbar-nav {
+            text-align: center;
+        }
+
+        .dropdown-menu {
+            text-align: left;
+        }
+    }
+</style>
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#!"><strong>MONSTER POINT</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'search' %}">search</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped Orders</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Not Shipped Orders</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'update_info' %}">User info</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'founders' %}">Admins</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'usage' %}">User info</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Category</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Meth' %}">Meth</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Molly' %}">Molly</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'DMT' %}">DMT</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Cookies' %}">Cookies</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Weed' %}">Weed</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'THC' %}">THC</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Pregabalin' %}">Pregabalin</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'M30s' %}">M30s</a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'Ketamine_Power' %}">Ketamine_Power</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span id="cart_quantity" class="badge bg-dark text-white ms-1 rounded-pill">{{ cart|length }}</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #0077cc;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 10px 0;
+            font-size: 28px;
+            color: #333;
+        }
+        .about {
+            font-size: 16px;
+            color: #555;
+            margin: 20px 0;
+        }
+        .social-links a {
+            margin: 0 10px;
+            color: #0077cc;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{% static 'images/one.jpg' %}" alt="My Picture" class="profile-pic">
+        <h1>Your Real Dad</h1>
+        <div class="about">
+            <p>Hello! I'm Your Real Dad, your drug dealer. Place an order and get yours at your door step.</p>
+        </div>
+        <div class="social-links">
+            <a href="https://wa.me/+447719280655" target="_blank">Whatsapp</a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank">LinkedIn</a>
+            <a href="https://discord.gg/xaSQkx4U" target="_blank">Reddit</a>
+
+        </div>
+    </div>
+    <div class="container">
+        <img src="{% static 'images/two.jpg' %}" alt="My Picture" class="profile-pic">
+        <h1>Steven</h1>
+        <div class="about">
+            <p>Jason Citron (born September 21, 1984) is an American businessman who is the co-founder and former chief executive officer of Discord, an instant messaging social platform.</p>
+        </div>
+        <div class="social-links">
+            <a href="https://wa.me/+14406455318" target="_blank">Whatsapp</a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank">LinkedIn</a>
+        </div>
+    </div>
+
+    <!-- <div class="container">
+        <img src="{% static 'img/tiktok_video_9W029.jpeg' %}" alt="My Picture" class="profile-pic">
+        <h1>XAX</h1>
+        <div class="about">
+            <p>Hello! I'm XAX, your drug dealer. Place an order and get yours at your door step.</p>
+        </div>
+        <div class="social-links">
+            <a href="https://wa.me/+15203024284" target="_blank">Whatsapp</a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank"></a>
+            <a href="#" target="_blank">LinkedIn</a>
+        </div>
+    </div> -->
+
+    <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 pt-12 pb-6 mt-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-white text-xl font-bold mb-4">Monsterpoint</h3>
+          <p class="text-sm">
+            We help businesses thrive with scalable, secure, and smart web solutions.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="{% url 'index' %}" class="hover:text-white transition">Home</a></li>
+            <li><a href="{% url 'founders' %}" class="hover:text-white transition">Admins</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Contact</h4>
+          <p class="text-sm">123 Main Street<br/>City, Country</p>
+          <p class="text-sm mt-2">Email: monsterpoint12@gmail.com</p>
+          <p class="text-sm">Phone: +123 456 7890</p>
+        </div>
+        <div>
+          <h4 class="text-white text-lg font-semibold mb-4">Follow Us</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="hover:text-white transition">🌐</a>
+            <a href="#" class="hover:text-white transition">🐦</a>
+            <a href="#" class="hover:text-white transition">📘</a>
+            <a href="#" class="hover:text-white transition">📸</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-gray-700 mt-10 pt-6 text-sm text-center text-gray-500">
+        © 2025 Monsterpoint. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+    <style>
+  footer {
+    background-color: #111827;
+    color: #d1d5db;
+    padding: 3rem 1rem;
+    margin-top: 5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  footer h3, footer h4 {
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  footer h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  footer h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  footer p, footer ul, footer li {
+    font-size: 0.9rem;
+  }
+
+  footer a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  footer a:hover {
+    color: white;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.25rem;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #374151;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+</style>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Enable hover for dropdowns on desktop
+        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+
+        dropdowns.forEach(function (dropdown) {
+            dropdown.addEventListener('mouseenter', function () {
+                if (window.innerWidth > 991) {
+                    const menu = dropdown.querySelector('.dropdown-menu');
+                    new bootstrap.Dropdown(dropdown.querySelector('.dropdown-toggle')).show();
+                }
+            });
+
+            dropdown.addEventListener('mouseleave', function () {
+                if (window.innerWidth > 991) {
+                    const menu = dropdown.querySelector('.dropdown-menu');
+                    new bootstrap.Dropdown(dropdown.querySelector('.dropdown-toggle')).hide();
+                }
+            });
+        });
+    });
+</script>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>
