@@ -206,3 +206,34 @@ def category_summary(request):
 
 def customer_service(request):
     return render(request, 'customer_service.html', {})
+
+# views.py
+
+from django.shortcuts import render, redirect
+from .models import Payment
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+
+@login_required
+def payment_page(request):
+    if request.method == "POST":
+        method = request.POST.get("method")
+        amount = request.POST.get("amount")
+        crypto_currency = request.POST.get("crypto_currency")
+        wallet_address = request.POST.get("wallet_address")
+
+        payment = Payment.objects.create(
+            user=request.user,
+            method=method,
+            amount=amount,
+            crypto_currency=crypto_currency if method == "crypto" else None,
+            wallet_address=wallet_address if method == "crypto" else None,
+        )
+
+        if method == "paypal":
+            # Redirect to PayPal
+            return redirect("https://www.paypal.com")  # Replace with real URL if using PayPal SDK
+
+        return render(request, "payment_success.html", {"payment": payment})
+
+    return render(request, "payment.html")

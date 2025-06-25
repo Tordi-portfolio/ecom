@@ -4,98 +4,202 @@
 
 {% block content %}
 
-<!-- Header-->
+<!-- Header -->
 <header class="bg-dark py-5">
   <div class="container px-4 px-lg-5 my-5">
-      <div class="text-center text-white">
-          <h1 class="display-4 fw-bolder">Add To Cart</h1>
-          <p class="lead fw-normal text-white-50 mb-0">You can add the below products to cart...</p>
-      </div>
+    <div class="text-center text-white">
+      <h1 class="display-4 fw-bolder">Add To Cart</h1>
+      <p class="lead fw-normal text-white-50 mb-0">Add your selected product to the cart below.</p>
+    </div>
   </div>
 </header>
 
-  <div class="container">
-    <br><br>
-
-    <div class="card mb-3" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src="{{product.image.url}}" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <center>
-              <h5 class="card-title">{{product.name}}</h5>
-              <p class="card-text justified">{{product.description}}</p>
+<!-- Main Content -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg border-0">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body p-4">
+              <h3 class="card-title text-center">{{ product.name }}</h3>
+              <p class="card-text text-muted text-center">{{ product.description }}</p>
 
               {% if product.is_sale %}
-              <div class="d-flex justify-content-center small text-warning mb-2">
+              <div class="d-flex justify-content-center small text-warning mb-3">
                 <div class="bi-star-fill"></div>
-                &nbsp;&nbsp;Sale&nbsp;&nbsp;
+                &nbsp;&nbsp;On Sale&nbsp;&nbsp;
                 <div class="bi-star-fill"></div>
-                </div>
-
-                <!-- Product price--> 
-                <strike>
-                    ${{product.price}}
-                </strike>
-                &nbsp;
-                ${{product.sale_price}}
+              </div>
+              <div class="text-center">
+                <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
+                <span class="fw-bold text-danger fs-5 ms-2">${{ product.sale_price }}</span>
+              </div>
               {% else %}
-                ${{product.price}}
+              <div class="text-center mb-3">
+                <span class="fw-bold text-dark fs-5">${{ product.price }}</span>
+              </div>
               {% endif %}
-              <br><br>
-              <div class="row justify-content-center">
-                <div class="col-md-2">Quantity</div>
-                <div class="col-md-2">
+
+              <!-- Quantity Selector -->
+              <div class="row justify-content-center align-items-center my-4">
+                <label class="col-auto fw-bold">Quantity:</label>
+                <div class="col-auto">
                   <select class="form-select form-select-sm" id="qty-cart">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    {% for i in "12345" %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
                   </select>
                 </div>
               </div>
-              <br><br>
-              <a class="btn btn-secondary" href="{% url 'home' %}">Home</a>
-              <button type="button" id="add-cart" value="{{ product.id }}" class="btn btn-secondary">Add To Cart</button>
-            </center>
+
+              <!-- Buttons -->
+              <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back to Home</a>
+                <button type="button" id="add-cart" value="{{ product.id }}" class="btn btn-dark">Add To Cart</button>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
-  <br><br>
+</div>
 
-  <script>
+<style>
+  /* General Body and Background */
+body {
+    background-color: #000; /* Black background */
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    $(document).on('click', '#add-cart', function(e){
-      e.preventDefault();
+/* Header Styling */
+header.bg-dark {
+    background-color: #111 !important;
+    background-image: linear-gradient(135deg, #222, #000);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
 
-      $.ajax({
-        type: 'POST',
-        url: '{% url "cart_add" %}',
-        data: {
-          product_id: $('#add-cart').val(),
-          product_qty: $('#qty-cart option:selected').text(),
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          action: 'post',
-        },
-        
-        success: function(json){
-          // console.log(json)
-          document.getElementById('cart_quantity').textContent = json.qty
-        },
+/* Product Card Styling */
+.card {
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #1c1c1c;
+    color: #fff;
+}
 
-        error: function(xhr, errmsg, err){
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.1);
+}
 
-        }
-      })
+.card-title {
+    font-size: 1.5rem;
+    color: #fff;
+}
 
+.card-text {
+    color: #ccc;
+    font-size: 0.95rem;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+.badge.bg-dark {
+    background-color: #ff4757 !important;
+    font-size: 0.75rem;
+    padding: 0.4em 0.6em;
+    border-radius: 0.4rem;
+}
+
+/* Price Styling */
+.text-decoration-line-through {
+    color: #888 !important;
+    font-size: 0.9rem;
+}
+
+.fw-bold.text-danger {
+    color: #ff6b6b !important;
+    font-size: 1.2rem;
+}
+
+/* Button Styling */
+.btn-outline-secondary,
+.btn-secondary,
+.btn-dark {
+    border-radius: 30px;
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #fff;
+    color: #000;
+    border-color: #fff;
+}
+
+.btn-secondary:hover,
+.btn-dark:hover {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+    color: #fff;
+}
+
+/* Quantity Selector */
+.form-select {
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #555;
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .form-select {
+        font-size: 0.9rem;
+    }
+}
+
+</style>
+
+<!-- AJAX Add to Cart Script -->
+<script>
+  $(document).on('click', '#add-cart', function(e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '{% url "cart_add" %}',
+      data: {
+        product_id: $('#add-cart').val(),
+        product_qty: $('#qty-cart option:selected').text(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        action: 'post',
+      },
+      success: function(json) {
+        document.getElementById('cart_quantity').textContent = json.qty;
+        alert("Product added to cart!");
+      },
+      error: function(xhr, errmsg, err) {
+        console.log("Error adding to cart:", errmsg);
+      }
     });
-
-  </script>
+  });
+</script>
 
 {% endblock %}

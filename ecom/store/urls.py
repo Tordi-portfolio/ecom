@@ -18,4 +18,5 @@ urlpatterns = [
     path('usage', views.usage, name='usage'),
     path('index', views.index, name='index'),
     path('founders', views.founders, name='founders'),
+    path("payment/", views.payment_page, name="payment"),
 ]
