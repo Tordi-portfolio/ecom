@@ -26,21 +26,90 @@
     {% include 'navbar.html' %}
 
     <!-- Flash Messages -->
-    <div class="container mt-3">
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="alert"
-              aria-label="Close"
-            ></button>
-          </div>
-        {% endfor %}
-      {% endif %}
-    </div>
+<div class="message-container" id="toastContainer">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="error-toast {{ message.tags }}">
+        <strong>{{ message.tags|title }}:</strong> {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<style>
+  .message-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .error-toast {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    max-width: 350px;
+    animation: toastIn 0.5s ease-out, toastOut 0.5s ease-in 4.5s;
+    opacity: 1;
+    position: relative;
+    transition: opacity 0.4s ease;
+  }
+
+  /* Base toast styles */
+  .error-toast.info {
+    background: linear-gradient(135deg, #2196f3, #00bcd4);
+  }
+
+  .error-toast.success {
+    background: linear-gradient(135deg, #00c853, #64dd17);
+  }
+
+  .error-toast.warning {
+    background: linear-gradient(135deg, #ffa000, #ffd600);
+    color: #000;
+  }
+
+  .error-toast.error {
+    background: linear-gradient(135deg, #d50000, #ff1744);
+  }
+
+  @keyframes toastIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes toastOut {
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+</style>
+
+<script>
+  // Auto-remove all toasts after 5s
+  document.addEventListener('DOMContentLoaded', () => {
+    const toasts = document.querySelectorAll('.error-toast');
+    toasts.forEach((toast) => {
+      setTimeout(() => {
+        toast.remove();
+      }, 5000); // 5 seconds
+    });
+  });
+</script>
+
 
     <!-- Main Content -->
     <main class="container my-4">
