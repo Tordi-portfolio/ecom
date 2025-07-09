@@ -13,6 +13,7 @@
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
 
                 <li class="nav-item"><a class="nav-link" href="{% url 'search' %}">search</a></li>
+                {% if user.is_superuser %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -21,6 +22,7 @@
                         <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Not Shipped Orders</a></li>
                     </ul>
                 </li>
+                {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -29,10 +31,10 @@
                         <li><a class="dropdown-item" href="{% url 'update_info' %}">User info</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="{% url 'founders' %}">Admins</a></li>
-                        <li><hr class="dropdown-divider" /></li>
+                        <!-- <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="{% url 'usage' %}">User info</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+                        <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li> -->
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
